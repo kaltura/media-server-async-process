@@ -31,7 +31,7 @@ $releaseId = $release->getId();
 echo "Release created with id $releaseId\n";
 
 $name = "AsyncMediaServerProcessClientApp-$version.zip";
-$filePath = __DIR__ . "/KalturaWowzaServer/build/distributions/$name";
+$filePath = __DIR__ . "/build/$name";
 $contentType = 'application/zip';
 $client->repos->releases->assets->upload($owner, $repo, $releaseId, $name, $contentType, $filePath);
 echo "AsyncMediaServerProcessClientApp zip file uploaded: $filePath\n";
