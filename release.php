@@ -1,11 +1,12 @@
 <?php
-require_once(__DIR__ . '/tmp/github-php-client/GitHubClient.php');
+
+require_once (__DIR__ . '/build/github-php-client/GitHubClient.php');
 
 $owner = 'kaltura';
 $repo = 'media-server-async-process';
 $username = $argv[1];
 $password = $argv[2];
-$version = file_get_contents(__DIR__ . "/version.txt");
+$version = $argv[3];
 
 $tag_name = "rel-$version";
 

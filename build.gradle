@@ -7,7 +7,7 @@ task clean (type: Delete) {
 task prepareAsyncMediaServerProcessClientAppRelease(type: Zip) {
 	archiveName = "$buildDir/AsyncMediaServerProcessClientApp-$project.version" + ".zip"
   	from "$projectDir/"
-  	exclude 'build.gradle', 'build', 'release.php'
+  	exclude 'build.gradle', 'build','.gradle', 'release.php', 'media-server-async-process.iml', 'gradlew', 'gradlew.bat', 'gradle', 'bin'
 
  	doLast {
 		println "AsyncMediaServerProcessClientApp ZIP: $prepareAsyncMediaServerProcessClientAppRelease.archivePath"
@@ -22,6 +22,7 @@ task release(type:Exec, dependsOn: prepareAsyncMediaServerProcessClientAppReleas
 
     //run the php release script
     workingDir projectDir
+    println "project dir is $projectDir"
     commandLine "php", "$projectDir/release.php", user , pass, version
 
     doFirst {
@@ -30,18 +31,21 @@ task release(type:Exec, dependsOn: prepareAsyncMediaServerProcessClientAppReleas
             throw new InvalidUserDataException("username or password arguments are null. use: 'gradle uploadRelease -Dusername=myuser -Dpassword=mypass'")
         }
 
-        def clientLibs = new File("${buildDir}/tmp/github-php-client")
+        def clientLibs = new File("${buildDir}/github-php-client")
 
         // If it doesn't exist, download it from Github
         if (!clientLibs.exists()) {
-            println "Downloading PHP github client library..."
-            ant.get(src: "https://github.com/tan-tan-kanarek/github-php-client/archive/master.zip", dest: "${buildDir}/tmp/github-php-client.zip")
-            ant.unzip(src: "${buildDir}/tmp/github-php-client.zip", dest: "${buildDir}/tmp")
-            ant.delete(file: "${buildDir}/tmp/github-php-client.zip")
-            ant.move(file: "${buildDir}/tmp/github-php-client-master/client", tofile: "${buildDir}/tmp/github-php-client")
-            ant.delete(dir: "${buildDir}/tmp/github-php-client-master")
+            ant.get(src: "https://github.com/tan-tan-kanarek/github-php-client/archive/master.zip", dest: "${buildDir}/github-php-client.zip")
+            ant.unzip(src: "${buildDir}/github-php-client.zip", dest: "${buildDir}/")
+            ant.delete(file: "${buildDir}/github-php-client.zip")
+            ant.move(file: "${buildDir}/github-php-client-master/client", tofile: "${buildDir}/github-php-client")
+            ant.delete(dir: "${buildDir}/github-php-client-master")
         } else {
             println "PHP Client exists. skip download."
         }
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
 }

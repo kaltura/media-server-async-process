@@ -3,4 +3,9 @@
 .project
 .settings/
 build/
-
+/bin/
+.idea/
+gradle/
+gradlew
+gradlew.bat
+media-server-async-process.iml
