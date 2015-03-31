@@ -1,0 +1,10 @@
+.classpath
+.gradle/
+.project
+.settings/
+build/
+.idea/
+gradle/
+gradlew
+gradlew.bat
+media-server-async-process.iml

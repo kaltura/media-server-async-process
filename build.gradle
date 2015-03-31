@@ -1,0 +1,54 @@
+version = '1.0'
+
+task clean (type: Delete) {
+	delete 'build'
+}
+
+task prepareAsyncMediaServerProcessClientAppRelease(type: Zip) {
+	archiveName = "$buildDir/AsyncMediaServerProcessClientApp-$project.version" + ".zip"
+  	from "$projectDir/"
+    include 'client/*', 'bin/*', 'src/*', 'configurations/*', 'README.md'
+
+    from ("$projectDir/release/")
+    include 'build.xml'
+
+ 	doLast {
+		println "AsyncMediaServerProcessClientApp ZIP: $prepareAsyncMediaServerProcessClientAppRelease.archivePath"
+	}
+}
+
+task release(type:Exec, dependsOn: prepareAsyncMediaServerProcessClientAppRelease) {
+
+    //check if client library already exists
+    def user = System.getProperty("username")
+    def pass = System.getProperty("password")
+
+    //run the php release script
+    workingDir projectDir
+    println "project dir is $projectDir"
+    commandLine "php", "$projectDir/release.php", user , pass, version
+
+    doFirst {
+        //validate username and password are set:
+        if (user == null || pass == null) {
+            throw new InvalidUserDataException("username or password arguments are null. use: 'gradle release -Dusername=myuser -Dpassword=mypass'")
+        }
+
+        def clientLibs = new File("${buildDir}/github-php-client")
+
+        // If it doesn't exist, download it from Github
+        if (!clientLibs.exists()) {
+            ant.get(src: "https://github.com/tan-tan-kanarek/github-php-client/archive/master.zip", dest: "${buildDir}/github-php-client.zip")
+            ant.unzip(src: "${buildDir}/github-php-client.zip", dest: "${buildDir}/")
+            ant.delete(file: "${buildDir}/github-php-client.zip")
+            ant.move(file: "${buildDir}/github-php-client-master/client", tofile: "${buildDir}/github-php-client")
+            ant.delete(dir: "${buildDir}/github-php-client-master")
+        } else {
+            println "PHP Client exists. skip download."
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
