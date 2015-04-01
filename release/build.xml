@@ -59,7 +59,7 @@
 
     <target name="reload_crontab">
         <exec executable="/bin/bash">
-            <arg value="service crond restart"/>
+            <arg line="service crond restart"/>
         </exec>
     </target>
 
