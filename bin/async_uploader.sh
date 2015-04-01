@@ -14,12 +14,8 @@
 #      REVISION:  ---
 #===============================================================================
 
-PROPERTIES_FILE_PATH=$1;
+UPLOAD_XML_DIR=$1
+ASYNC_CLIENT_APP_DIR=$2
 
-. $PROPERTIES_FILE_PATH
-
-. $BIN_DIR/utils/*
-
-echo "installing asyncMediaServerProcessScript.php as cronjob"
-
-install_cronjob  "* * * * *  $ASYNC_CLIENT_APP_DIR/bin/kaltura_async_uploader_cronJob.sh $PROPERTIES_FILE_PATH" root
+flock -n $UPLOAD_XML_DIR/uploadCron.lockfile -c "php $ASYNC_CLIENT_APP_DIR/src/asyncMediaServerProcessScript.php \
+    $ASYNC_CLIENT_APP_DIR/configurations/config.ini >> $ASYNC_CLIENT_APP_DIR/uploadLog.log"
