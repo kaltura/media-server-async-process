@@ -7,7 +7,7 @@ task clean (type: Delete) {
 task prepareAsyncMediaServerProcessClientAppRelease(type: Zip) {
 	archiveName = "$buildDir/AsyncMediaServerProcessClientApp-$project.version" + ".zip"
   	from "$projectDir/"
-    include 'client/*', 'bin/*', 'src/*', 'configurations/*', 'README.md'
+    include 'client/*', 'bin/*', 'src/*', 'configurations/**', 'README.md'
 
     from ("$projectDir/release/")
     include 'build.xml'

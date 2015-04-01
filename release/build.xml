@@ -8,11 +8,13 @@
         </and>
     </condition>
 
+    <property environment="env"/>
+
     <target name="check_partner_id_set" unless="PARTNER_ID">
         <input message="Please enter your Kaltura partner id:" addproperty="PARTNER_ID"/>
     </target>
 
-    <target name="check_admin-secret_set" unless="ADMIN_SECRET">
+    <target name="check_admin_secret_set" unless="ADMIN_SECRET">
         <input message="Please enter your partner admin secret:" addproperty="ADMIN_SECRET"/>
     </target>
 
@@ -25,22 +27,18 @@
     </target>
 
     <target name="validate_proprties_file_exists">
-        <available file="${proprties_file_path}" property="properties_file_exists"/>
+        <available file="${env.KALTURA_ECDN_CONFIG_FILE_PATH}" property="properties_file_exists"/>
     </target>
 
     <target name="load_properties" depends="validate_proprties_file_exists" if="properties_file_exists">
-        <loadproperties srcfile="${proprties_file_path}" />
+        <loadproperties srcfile="${env.KALTURA_ECDN_CONFIG_FILE_PATH}" />
     </target>
 
     <target name="kaltura_async_uploader_cronjob_install" if="isCentOs">
-        <exec executable="/bin/bash">
-            <arg value="${basedir}/bin/kaltura_async_uploader_cronjob_install.sh"/>
-            <arg value="${proprties_file_path}"/>
-
-        </exec>
+        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configuration/kaltura_async_uploader" failonerror="true"/>
     </target>
 
-    <target name="copy-and-set-template-file" depends="load_properties, check_partner_id_set, check_admin-secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
+    <target name="copy-and-set-template-file" depends="load_properties, check_partner_id_set, check_admin_secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
         <echo message="copying file from ${basedir}/configurations/config.template.ini to ${basedir}/configurations/config.ini"/>
         <copy file="${basedir}/configurations/config.template.ini" tofile="${basedir}/configurations/config.ini" overwrite="true" filtering="true">
             <filterset>

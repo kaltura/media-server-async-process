@@ -1,0 +1,1 @@
+* * * * * root . $KALTURA_ECDN_CONFIG_FILE_PATH; $ASYNC_CLIENT_APP_DIR/bin/async_uploader.sh
