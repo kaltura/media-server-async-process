@@ -35,10 +35,10 @@
     </target>
 
     <target name="kaltura_async_uploader_cronjob_install" if="isCentOs">
-        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configuration/kaltura_async_uploader" failonerror="true"/>
+        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configurations/kaltura_async_uploader" failonerror="false"/>
     </target>
 
-    <target name="copy-and-set-template-file" depends="load_properties, check_partner_id_set, check_admin_secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
+    <target name="copy-and-set-template-files" depends="load_properties, check_partner_id_set, check_admin_secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
         <echo message="copying file from ${basedir}/configurations/config.template.ini to ${basedir}/configurations/config.ini"/>
         <copy file="${basedir}/configurations/config.template.ini" tofile="${basedir}/configurations/config.ini" overwrite="true" filtering="true">
             <filterset>
@@ -48,9 +48,23 @@
                 <filter token="SERVICE_URL" value="${apphome_url}"/>
             </filterset>
         </copy>
+
+        <echo message="copying file from ${basedir}/configurations/cron/kaltura_async_uploader.template to ${basedir}/configurations/cron/kaltura_async_uploader"/>
+        <copy file="${basedir}/configurations/cron/kaltura_async_uploader.template" tofile="${basedir}/configurations/cron/kaltura_async_uploader.template" overwrite="true" filtering="true">
+            <filterset>
+                <filter token="ASYNC_CLIENT_APP_DIR" value="${ASYNC_CLIENT_APP_DIR}"/>
+            </filterset>
+        </copy>
     </target>
 
-    <target name="configure" depends="copy-and-set-template-file, kaltura_async_uploader_cronjob_install">
+    <target name="reload_crontab">
+        <exec executable="/bin/bash">
+            <arg value="service crond restart"/>
+        </exec>
+    </target>
+
+
+    <target name="configure" depends="copy-and-set-template-files, kaltura_async_uploader_cronjob_install, reload_crontab">
         <echo message="Finished configuring Kaltura recorded file uploader"/>
     </target>
 
