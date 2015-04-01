@@ -14,7 +14,7 @@
 #      REVISION:  ---
 #===============================================================================
 
-PROPERTIES_FILE_PATH = $1;
+PROPERTIES_FILE_PATH=$1;
 
 . $PROPERTIES_FILE_PATH
 
