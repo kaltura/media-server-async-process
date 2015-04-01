@@ -35,7 +35,7 @@
     </target>
 
     <target name="kaltura_async_uploader_cronjob_install" if="isCentOs">
-        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configurations/kaltura_async_uploader" failonerror="false"/>
+        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configurations/cron/kaltura_async_uploader" failonerror="false"/>
     </target>
 
     <target name="copy-and-set-template-files" depends="load_properties, check_partner_id_set, check_admin_secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
@@ -50,9 +50,10 @@
         </copy>
 
         <echo message="copying file from ${basedir}/configurations/cron/kaltura_async_uploader.template to ${basedir}/configurations/cron/kaltura_async_uploader"/>
-        <copy file="${basedir}/configurations/cron/kaltura_async_uploader.template" tofile="${basedir}/configurations/cron/kaltura_async_uploader.template" overwrite="true" filtering="true">
+        <copy file="${basedir}/configurations/cron/kaltura_async_uploader.template" tofile="${basedir}/configurations/cron/kaltura_async_uploader" overwrite="true" filtering="true">
             <filterset>
                 <filter token="ASYNC_CLIENT_APP_DIR" value="${ASYNC_CLIENT_APP_DIR}"/>
+                <filter token="UPLOAD_XML_DIR" value="${UPLOAD_XML_DIR}"/>
             </filterset>
         </copy>
     </target>

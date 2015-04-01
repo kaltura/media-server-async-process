@@ -14,7 +14,8 @@
 #      REVISION:  ---
 #===============================================================================
 
-. $KALTURA_ECDN_CONFIG_FILE_PATH
+UPLOAD_XML_DIR=$1
+ASYNC_CLIENT_APP_DIR=$2
 
 flock -n $UPLOAD_XML_DIR/uploadCron.lockfile -c "php $ASYNC_CLIENT_APP_DIR/src/asyncMediaServerProcessScript.php \
     $ASYNC_CLIENT_APP_DIR/configurations/config.ini >> $ASYNC_CLIENT_APP_DIR/uploadLog.log"

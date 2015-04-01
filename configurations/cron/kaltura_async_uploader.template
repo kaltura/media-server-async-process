@@ -1,1 +1,1 @@
-* * * * * root @ASYNC_CLIENT_APP_DIR@/bin/async_uploader.sh
+* * * * * root @ASYNC_CLIENT_APP_DIR@/bin/async_uploader.sh "@UPLOAD_XML_DIR@" "@ASYNC_CLIENT_APP_DIR@"
