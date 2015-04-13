@@ -34,9 +34,10 @@
         <loadproperties srcfile="${env.KALTURA_ECDN_CONFIG_FILE_PATH}" />
     </target>
 
-    <target name="kaltura_async_uploader_cronjob_install" if="isCentOs">
+    <target name="kaltura_async_uploader_jobs_install" if="isCentOs">
         <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configurations/cron/kaltura_async_uploader" failonerror="false"/>
         <chmod dir="${basedir}/bin" includes="*.sh" perm="774"/>
+        <symlink action="single" link="/etc/logrotate.d/kaltura_async_uploader_logrotate" resource="${ASYNC_CLIENT_APP_DIR}/configurations/logrotate/kaltura_async_uploader_logrotate" failonerror="false"/>
     </target>
 
     <target name="copy-and-set-template-files" depends="load_properties, check_partner_id_set, check_admin_secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
@@ -57,6 +58,13 @@
                 <filter token="UPLOAD_XML_DIR" value="${UPLOAD_XML_DIR}"/>
             </filterset>
         </copy>
+
+        <echo message="copying file from ${basedir}/configurations/logrotate/kaltura_async_uploader_logrotate.template to ${basedir}/configurations/logrotate/kaltura_async_uploader_logrotate"/>
+        <copy file="${basedir}/configurations/logrotate/kaltura_async_uploader_logrotate.template" tofile="${basedir}/configurations/logrotate/kaltura_async_uploader_logrotate" overwrite="true" filtering="true">
+            <filterset>
+                <filter token="LOG_DIR" value="${LOG_DIR}"/>
+            </filterset>
+        </copy>
     </target>
 
     <target name="reload_crontab">
@@ -66,8 +74,9 @@
     </target>
 
 
-    <target name="configure" depends="copy-and-set-template-files, kaltura_async_uploader_cronjob_install, reload_crontab">
+    <target name="configure" depends="copy-and-set-template-files, kaltura_async_uploader_jobs_install, reload_crontab">
         <echo message="Finished configuring Kaltura recorded file uploader"/>
     </target>
 
 </project>
+

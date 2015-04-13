@@ -1,0 +1,7 @@
+@LOG_DIR@/media_server-uploader.log {
+ rotate 5
+ daily
+ missingok
+ compress
+ dateext
+ notifempty
