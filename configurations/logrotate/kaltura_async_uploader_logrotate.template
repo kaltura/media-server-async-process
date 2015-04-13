@@ -1,4 +1,4 @@
-@LOG_DIR@/media_server-uploader.log {
+@LOG_DIR@/uploadLog.log {
  rotate 5
  daily
  missingok
