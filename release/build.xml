@@ -56,6 +56,7 @@
             <filterset>
                 <filter token="ASYNC_CLIENT_APP_DIR" value="${ASYNC_CLIENT_APP_DIR}"/>
                 <filter token="UPLOAD_XML_DIR" value="${UPLOAD_XML_DIR}"/>
+                <filter token="LOG_DIR" value="${LOG_DIR}"/>
             </filterset>
         </copy>
 
