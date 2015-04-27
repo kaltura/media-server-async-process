@@ -53,7 +53,7 @@ foreach ($files as $f) {
 asort($tmp);
 $files = array_keys($tmp);
 
-require_once 'client/KalturaClient.php';
+require_once( __DIR__ . "/../client/KalturaClient.php");
 $clientConfig = new KalturaConfiguration();
 $clientConfig->serviceUrl = $config['serviceUrl'];
 $clientConfig->partnerId = $config['partnerId'];
