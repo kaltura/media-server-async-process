@@ -19,4 +19,4 @@ ASYNC_CLIENT_APP_DIR=$2
 LOG_DIR=$3
 
 flock -n $UPLOAD_XML_DIR/uploadCron.lockfile -c "php $ASYNC_CLIENT_APP_DIR/src/asyncMediaServerProcessScript.php \
-    configurations/config.ini >> $LOG_DIR/uploadLog.log"
+    $ASYNC_CLIENT_APP_DIR/configurations/config.ini >> $LOG_DIR/uploadLog.log"
