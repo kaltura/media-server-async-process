@@ -69,14 +69,14 @@ foreach ($files as $f)
     catch(Exception $e){
         logException($e);
         logMsg("Failed to parse file as xml: " . $f . " moving file to error dir");
-        moveFile($f, $baseCompleteDir . basename($f));
+        moveFile($f, $baseErrorDir . basename($f));
     }
 
 	if ($taskXml->getName() == 'upload')
 	{
 		try {
 			handleUploadXMLResource($client, $taskXml, $baseErrorDir);
-			moveFile($f, $baseErrorDir . basename($f));
+			moveFile($f, $baseCompleteDir . basename($f));
 		}
 		catch(KalturaClientException $e) {
 			logException($e);
