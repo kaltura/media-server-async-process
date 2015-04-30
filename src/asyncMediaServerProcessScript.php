@@ -62,13 +62,21 @@ $ks = $client->generateSessionV2($config['adminSecret'], '', KalturaSessionType:
 $client->setKs($ks);
 
 foreach ($files as $f)
-{	
-	$taskXml = new SimpleXMLElement(file_get_contents($f));
+{
+    try{
+        $taskXml = new SimpleXMLElement(file_get_contents($f));
+    }
+    catch(Exception $e){
+        logException($e);
+        logMsg("Failed to parse file as xml: " . $f . " moving file to error dir");
+        moveFile($f, $baseCompleteDir . basename($f));
+    }
+
 	if ($taskXml->getName() == 'upload')
 	{
 		try {
 			handleUploadXMLResource($client, $taskXml, $baseErrorDir);
-			moveFile($f, $baseCompleteDir . basename($f));
+			moveFile($f, $baseErrorDir . basename($f));
 		}
 		catch(KalturaClientException $e) {
 			logException($e);
