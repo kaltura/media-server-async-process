@@ -35,9 +35,9 @@
     </target>
 
     <target name="kaltura_async_uploader_jobs_install" if="isCentOs">
-        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configurations/cron/kaltura_async_uploader" failonerror="false"/>
+        <symlink action="single" link="/etc/cron.d/kaltura_media_server_async_uploader" resource="${ASYNC_CLIENT_APP_DIR}/configurations/cron/kaltura_async_uploader" failonerror="false" overwrite="true"/>
         <chmod dir="${basedir}/bin" includes="*.sh" perm="774"/>
-        <symlink action="single" link="/etc/logrotate.d/kaltura_async_uploader_logrotate" resource="${ASYNC_CLIENT_APP_DIR}/configurations/logrotate/kaltura_async_uploader_logrotate" failonerror="false"/>
+        <symlink action="single" link="/etc/logrotate.d/kaltura_async_uploader_logrotate" resource="${ASYNC_CLIENT_APP_DIR}/configurations/logrotate/kaltura_async_uploader_logrotate" failonerror="false" overwrite="true"/>
     </target>
 
     <target name="copy-and-set-template-files" depends="load_properties, check_partner_id_set, check_admin_secret_set, check_upload_xml_path_set, check_kaltura_app_url_set">
